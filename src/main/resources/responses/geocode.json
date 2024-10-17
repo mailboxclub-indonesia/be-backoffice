@@ -1,0 +1,101 @@
+{
+  "results": [
+    {
+      "address_components": [
+        {
+          "long_name": "404",
+          "short_name": "404",
+          "types": [
+            "street_number"
+          ]
+        },
+        {
+          "long_name": "Eager Road",
+          "short_name": "Eager Rd",
+          "types": [
+            "route"
+          ]
+        },
+        {
+          "long_name": "Valdosta",
+          "short_name": "Valdosta",
+          "types": [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name": "Lowndes County",
+          "short_name": "Lowndes County",
+          "types": [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name": "Georgia",
+          "short_name": "GA",
+          "types": [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name": "United States",
+          "short_name": "US",
+          "types": [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name": "31602",
+          "short_name": "31602",
+          "types": [
+            "postal_code"
+          ]
+        },
+        {
+          "long_name": "1388",
+          "short_name": "1388",
+          "types": [
+            "postal_code_suffix"
+          ]
+        }
+      ],
+      "formatted_address": "404 Eager Rd, Valdosta, GA 31602, USA",
+      "geometry": {
+        "bounds": {
+          "northeast": {
+            "lat": 30.8704735,
+            "lng": -83.2987869
+          },
+          "southwest": {
+            "lat": 30.8703399,
+            "lng": -83.29891959999999
+          }
+        },
+        "location": {
+          "lat": 30.8704067,
+          "lng": -83.2988532
+        },
+        "location_type": "ROOFTOP",
+        "viewport": {
+          "northeast": {
+            "lat": 30.8717987302915,
+            "lng": -83.2975042697085
+          },
+          "southwest": {
+            "lat": 30.86910076970851,
+            "lng": -83.3002022302915
+          }
+        }
+      },
+      "place_id": "ChIJGawT9VFm7ogRoZMY363zrps",
+      "types": [
+        "premise"
+      ]
+    }
+  ],
+  "status": "OK"
+}
