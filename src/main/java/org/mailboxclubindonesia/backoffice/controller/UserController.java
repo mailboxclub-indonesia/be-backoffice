@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,6 +77,19 @@ public class UserController {
     }
   }
 
+  @PutMapping("/detail/{id}")
+  ResponseEntity<UserDetail> putUserDetail(@PathVariable UUID id, @Valid @RequestBody UserDetail userDetail) {
+    try {
+      userDetail.setId(id);
+      UserDetail updatedUserDetail = userService.saveUserDetail(userDetail);
+      return ResponseEntity.status(HttpStatus.OK).body(updatedUserDetail);
+    } catch (RuntimeException exception) {
+      exception.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Failed to update user detail" + exception.getMessage(), exception);
+    }
+  }
+
   @PostMapping("/address")
   ResponseEntity<UserAddress> postUserAddress(@Valid @RequestBody UserAddress userAddress) {
     try {
@@ -107,7 +121,20 @@ public class UserController {
     } catch (RuntimeException exception) {
       exception.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "Failed to get user detail: " + exception.getMessage(), exception);
+          "Failed to get user address: " + exception.getMessage(), exception);
+    }
+  }
+
+  @PutMapping("/address/{id}")
+  ResponseEntity<UserAddress> putUserAddress(@PathVariable UUID id, @Valid @RequestBody UserAddress userAddress) {
+    try {
+      userAddress.setId(id);
+      UserAddress userAddressWithGeometry = gmapService.setUserAddressGeometry(userAddress);
+      UserAddress updateUserAddress = userService.saveUserAddress(userAddressWithGeometry);
+      return ResponseEntity.status(HttpStatus.OK).body(updateUserAddress);
+    } catch (RuntimeException exception) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Failed to update user address: " + exception.getMessage(), exception);
     }
   }
 }
