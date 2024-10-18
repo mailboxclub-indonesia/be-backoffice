@@ -42,4 +42,8 @@ public class UserService {
     UserAddress newUserAddress = this.userAddressRepository.save(userAddress);
     return newUserAddress;
   }
+
+  public Optional<UserAddress> findUserAddressById(UUID id) {
+    return this.userAddressRepository.findById(id);
+  }
 }

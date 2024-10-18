@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +49,7 @@ public class UserController {
       }
 
       this.emailService.sendEmailAuthRegister(user.get().getEmail(), newUserDetail);
-      return ResponseEntity.status(HttpStatus.CREATED).build();
+      return ResponseEntity.status(HttpStatus.CREATED).body(newUserDetail);
     } catch (RuntimeException exception) {
       exception.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
@@ -58,12 +59,29 @@ public class UserController {
     }
   }
 
+  @GetMapping("/detail/{id}")
+  ResponseEntity<UserDetail> getUserDetail(@PathVariable String id, @RequestAttribute("userId") UUID userId) {
+    try {
+      Optional<UserDetail> userDetail = userService.findUserDetailById(UUID.fromString(id));
+
+      if (userDetail.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User detail not found");
+      }
+
+      return ResponseEntity.status(HttpStatus.OK).body(userDetail.get());
+    } catch (RuntimeException exception) {
+      exception.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Failed to get user detail: " + exception.getMessage(), exception);
+    }
+  }
+
   @PostMapping("/address")
   ResponseEntity<UserAddress> postUserAddress(@Valid @RequestBody UserAddress userAddress) {
     try {
       UserAddress userAddressWithGeometry = gmapService.setUserAddressGeometry(userAddress);
       userService.saveUserAddress(userAddressWithGeometry);
-      return ResponseEntity.status(HttpStatus.CREATED).build();
+      return ResponseEntity.status(HttpStatus.CREATED).body(userAddressWithGeometry);
     } catch (DataIntegrityViolationException exception) {
       exception.printStackTrace();
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -76,17 +94,16 @@ public class UserController {
     }
   }
 
-  @GetMapping("/{id}")
-  ResponseEntity<UserDetail> getUserDetail(@PathVariable String id) {
+  @GetMapping("/address/{id}")
+  ResponseEntity<UserAddress> getUserAddress(@PathVariable String id) {
     try {
+      Optional<UserAddress> userAddress = userService.findUserAddressById(UUID.fromString(id));
 
-      Optional<UserDetail> userDetail = userService.findUserDetailById(UUID.fromString(id));
-
-      if (userDetail.isEmpty()) {
+      if (userAddress.isEmpty()) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User detail not found");
       }
 
-      return ResponseEntity.status(HttpStatus.OK).body(userDetail.get());
+      return ResponseEntity.status(HttpStatus.OK).body(userAddress.get());
     } catch (RuntimeException exception) {
       exception.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
