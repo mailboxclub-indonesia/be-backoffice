@@ -1,13 +1,12 @@
 package org.mailboxclubindonesia.backoffice.service;
 
-import org.mailboxclubindonesia.backoffice.restclient.GoogleMapRestClient;
-import org.springframework.stereotype.Service;
-import org.mailboxclubindonesia.backoffice.model.UserAddress;
-
+import org.mailboxclubindonesia.backoffice.dto.GoogleMapDto.GeocodeResponse;
 import org.mailboxclubindonesia.backoffice.dto.GoogleMapDto.Geometry;
 import org.mailboxclubindonesia.backoffice.dto.GoogleMapDto.Location;
-import org.mailboxclubindonesia.backoffice.dto.GoogleMapDto.GeocodeResponse;
 import org.mailboxclubindonesia.backoffice.dto.GoogleMapDto.Result;
+import org.mailboxclubindonesia.backoffice.model.Address;
+import org.mailboxclubindonesia.backoffice.restclient.GoogleMapRestClient;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GoogleMapService {
@@ -34,15 +33,16 @@ public class GoogleMapService {
     return location.getLng();
   }
 
-  public UserAddress setUserAddressGeometry(UserAddress userAddress) {
-    GeocodeResponse response = this.gmapRestClient.getGeocodeFromAddress(userAddress.getFullAddress());
+  public <T extends Address> T setGeometry(T address) {
+    GeocodeResponse response = gmapRestClient.getGeocodeFromAddress(address.getFullAddress());
 
     double latitude = getLatitude(response);
     double longitude = getLongitude(response);
 
-    userAddress.setLatitude(latitude);
-    userAddress.setLongitude(longitude);
+    address.setLatitude(latitude);
+    address.setLongitude(longitude);
 
-    return userAddress;
+    return address;
   }
+
 }

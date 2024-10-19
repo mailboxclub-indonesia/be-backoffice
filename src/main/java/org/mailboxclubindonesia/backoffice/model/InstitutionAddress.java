@@ -2,7 +2,6 @@ package org.mailboxclubindonesia.backoffice.model;
 
 import java.util.UUID;
 
-import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "institution_addresses")
-public class InstitutionAddress {
+public class InstitutionAddress extends Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,24 +26,8 @@ public class InstitutionAddress {
   @Column(name = "institution_id")
   private UUID institutionId;
 
-  @NotNull
-  private String address;
+  protected InstitutionAddress() {
 
-  @NotNull
-  private String state;
+  }
 
-  @NotNull
-  private String city;
-
-  @Nullable
-  private String subdistrict;
-
-  @Nullable
-  private String ward;
-
-  @Nullable
-  private float latitude;
-
-  @Nullable
-  private float longitude;
 }

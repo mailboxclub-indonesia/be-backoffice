@@ -12,15 +12,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "user_details")
-@Getter
-@Setter
-@ToString
 public class UserDetail {
 
   @Id

@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS "user_addresses" (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
   address VARCHAR(255),
-  state VARCHAR(50),
-  city VARCHAR(50),
-  subdistrict VARCHAR(50),
   ward VARCHAR(50),
+  subdistrict VARCHAR(50),
+  city VARCHAR(50),
+  state VARCHAR(50),
   latitude DOUBLE PRECISION,
   longitude DOUBLE PRECISION,
   UNIQUE (user_id),
@@ -33,19 +33,21 @@ CREATE TABLE IF NOT EXISTS "user_addresses" (
 
 CREATE TABLE IF NOT EXISTS "institutions" (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(100) NOT NULL
+  name VARCHAR(100) NOT NULL,
+  type VARCHAR(25) NULL,
+  UNIQUE(name)
 );
 
 CREATE TABLE IF NOT EXISTS "institution_addresses" (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   institution_id UUID NOT NULL,
   address VARCHAR(255) NOT NULL,
-  state VARCHAR(50),
-  city VARCHAR(50),
-  subdistrict VARCHAR(50),
   ward VARCHAR(50),
+  subdistrict VARCHAR(50),
+  city VARCHAR(50),
+  state VARCHAR(50),
   latitude DOUBLE PRECISION,
   longitude DOUBLE PRECISION,
   UNIQUE (institution_id),
-  CONSTRAINT fk_user FOREIGN KEY(institution_id) REFERENCES users (id) ON DELETE CASCADE
+  CONSTRAINT fk_institution FOREIGN KEY(institution_id) REFERENCES institutions (id) ON DELETE CASCADE
 );

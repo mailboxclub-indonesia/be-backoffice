@@ -93,7 +93,7 @@ public class UserController {
   @PostMapping("/address")
   ResponseEntity<UserAddress> postUserAddress(@Valid @RequestBody UserAddress userAddress) {
     try {
-      UserAddress userAddressWithGeometry = gmapService.setUserAddressGeometry(userAddress);
+      UserAddress userAddressWithGeometry = gmapService.setGeometry(userAddress);
       userService.saveUserAddress(userAddressWithGeometry);
       return ResponseEntity.status(HttpStatus.CREATED).body(userAddressWithGeometry);
     } catch (DataIntegrityViolationException exception) {
@@ -129,7 +129,7 @@ public class UserController {
   ResponseEntity<UserAddress> putUserAddress(@PathVariable UUID id, @Valid @RequestBody UserAddress userAddress) {
     try {
       userAddress.setId(id);
-      UserAddress userAddressWithGeometry = gmapService.setUserAddressGeometry(userAddress);
+      UserAddress userAddressWithGeometry = gmapService.setGeometry(userAddress);
       UserAddress updateUserAddress = userService.saveUserAddress(userAddressWithGeometry);
       return ResponseEntity.status(HttpStatus.OK).body(updateUserAddress);
     } catch (RuntimeException exception) {

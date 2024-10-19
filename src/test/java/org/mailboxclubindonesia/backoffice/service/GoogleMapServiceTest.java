@@ -78,7 +78,7 @@ public class GoogleMapServiceTest {
 
     when(gmapRestClient.getGeocodeFromAddress(userAddress.getFullAddress())).thenReturn(response);
 
-    UserAddress newUserAddress = gmapService.setUserAddressGeometry(userAddress);
+    UserAddress newUserAddress = gmapService.setGeometry(userAddress);
     assertEquals(30.8704067, newUserAddress.getLatitude());
     assertEquals(-83.2988532, newUserAddress.getLongitude());
   }
