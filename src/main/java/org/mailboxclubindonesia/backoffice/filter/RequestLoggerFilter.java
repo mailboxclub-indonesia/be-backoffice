@@ -16,6 +16,19 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class RequestLoggerFilter extends OncePerRequestFilter {
 
+  private void logRequest(ContentCachingRequestWrapper wrappedRequest) {
+    String requestBody = new String(wrappedRequest.getContentAsByteArray(), StandardCharsets.UTF_8);
+    logger.info("RequestMethod: " + wrappedRequest.getMethod() + " " +
+        wrappedRequest.getRequestURI());
+    logger.info("RequestBody: " + requestBody);
+  }
+
+  private void logResponse(ContentCachingResponseWrapper wrappedResponse) {
+    String responseBody = new String(wrappedResponse.getContentAsByteArray(), StandardCharsets.UTF_8);
+    logger.info("ResponseStatus: " + wrappedResponse.getStatus());
+    logger.info("ResponseBody: " + responseBody);
+  }
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
@@ -26,18 +39,10 @@ public class RequestLoggerFilter extends OncePerRequestFilter {
 
       chain.doFilter(wrappedRequest, wrappedResponse);
 
-      String requestBody = new String(wrappedRequest.getContentAsByteArray(), StandardCharsets.UTF_8);
-      String responseBody = new String(wrappedResponse.getContentAsByteArray(), StandardCharsets.UTF_8);
-
-      logger.info("RequestMethod: " + request.getMethod() + " " +
-          request.getRequestURI());
-      logger.info("RequestBody: " + requestBody);
-
-      logger.info("ResponseStatus: " + response.getStatus());
-      logger.info("ResponseBody: " + responseBody);
+      logRequest(wrappedRequest);
+      logResponse(wrappedResponse);
 
       wrappedResponse.copyBodyToResponse();
-
     } catch (ServletException exception) {
       exception.printStackTrace();
     } catch (IOException exception) {
