@@ -51,7 +51,7 @@ public class AuthenticationController {
     try {
       User user = authenticationService.authenticateUser(request.getEmail(), request.getPassword());
       String token = authenticationService.generateTokenFromUser(user);
-      LoginResponse response = new LoginResponse(token);
+      LoginResponse response = new LoginResponse(user, token);
       return ResponseEntity.status(HttpStatus.OK).body(response);
     } catch (PasswordMissmatchException exception) {
       exception.printStackTrace();

@@ -27,4 +27,13 @@ public class UserInstitution {
   @NotNull
   @Column(name = "institution_id")
   private UUID institutionId;
+
+  protected UserInstitution() {
+
+  }
+
+  public UserInstitution(UUID userId, UUID institutionId) {
+    this.userId = userId;
+    this.institutionId = institutionId;
+  }
 }

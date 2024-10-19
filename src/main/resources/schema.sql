@@ -31,6 +31,15 @@ CREATE TABLE IF NOT EXISTS "user_addresses" (
   CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS "user_institutions" (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  institution_id UUID NOT NULL,
+  UNIQUE (user_id, institution_id),
+  CONSTRAINT fk_user_institutions_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  CONSTRAINT fk_user_institutions_institution FOREIGN KEY (institution_id) REFERENCES institutions (id) ON DELETE RESTRICT
+);
+
 CREATE TABLE IF NOT EXISTS "institutions" (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(100) NOT NULL,
