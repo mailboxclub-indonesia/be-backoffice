@@ -1,5 +1,8 @@
 package org.mailboxclubindonesia.backoffice.service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.mailboxclubindonesia.backoffice.model.Institution;
 import org.mailboxclubindonesia.backoffice.model.InstitutionAddress;
 import org.mailboxclubindonesia.backoffice.repository.InstitutionAddressRepository;
@@ -22,7 +25,15 @@ public class InstitutionService {
     return this.institutionRepository.save(institution);
   }
 
+  public Optional<Institution> findInstitutionById(UUID id) {
+    return this.institutionRepository.findById(id);
+  }
+
   public InstitutionAddress saveInstitutionAddress(InstitutionAddress institutionAddress) {
     return this.institutionAddressRepository.save(institutionAddress);
+  }
+
+  public Optional<InstitutionAddress> findInstitutionAddressById(UUID id) {
+    return this.institutionAddressRepository.findById(id);
   }
 }
