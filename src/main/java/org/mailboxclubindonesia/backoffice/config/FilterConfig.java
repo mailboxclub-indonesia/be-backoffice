@@ -1,6 +1,7 @@
 package org.mailboxclubindonesia.backoffice.config;
 
 import org.mailboxclubindonesia.backoffice.filter.AuthenticationFilter;
+import org.mailboxclubindonesia.backoffice.filter.RequestLoggerFilter;
 import org.mailboxclubindonesia.backoffice.service.AuthenticationService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +17,18 @@ public class FilterConfig {
   }
 
   @Bean
-  FilterRegistrationBean<AuthenticationFilter> secondFilter() {
+  FilterRegistrationBean<RequestLoggerFilter> requestLogger() {
+    FilterRegistrationBean<RequestLoggerFilter> registrationBean = new FilterRegistrationBean<>();
+    registrationBean.setFilter(new RequestLoggerFilter());
+    registrationBean.addUrlPatterns("/api/*");
+    return registrationBean;
+  }
+
+  @Bean
+  FilterRegistrationBean<AuthenticationFilter> autheticationFilter() {
     FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
     registrationBean.setFilter(new AuthenticationFilter(authenticationService));
     registrationBean.addUrlPatterns("/api/*");
-    registrationBean.setOrder(0);
     return registrationBean;
   }
 }
