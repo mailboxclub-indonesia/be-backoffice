@@ -31,6 +31,13 @@ CREATE TABLE IF NOT EXISTS "user_addresses" (
   CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS "institutions" (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  type VARCHAR(25) NULL,
+  UNIQUE(name)
+  );
+
 CREATE TABLE IF NOT EXISTS "user_institutions" (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
@@ -38,13 +45,6 @@ CREATE TABLE IF NOT EXISTS "user_institutions" (
   UNIQUE (user_id, institution_id),
   CONSTRAINT fk_user_institutions_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   CONSTRAINT fk_user_institutions_institution FOREIGN KEY (institution_id) REFERENCES institutions (id) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS "institutions" (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(100) NOT NULL,
-  type VARCHAR(25) NULL,
-  UNIQUE(name)
 );
 
 CREATE TABLE IF NOT EXISTS "institution_addresses" (
@@ -59,4 +59,16 @@ CREATE TABLE IF NOT EXISTS "institution_addresses" (
   longitude DOUBLE PRECISION,
   UNIQUE (institution_id),
   CONSTRAINT fk_institution FOREIGN KEY(institution_id) REFERENCES institutions (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "customers" (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID,
+  institution_id UUID NOT NULL,
+  firstname VARCHAR(50),
+  lastname VARCHAR(50),
+  phone VARCHAR(25) UNIQUE,
+  email VARCHAR(25) UNIQUE,
+  created_date TIMESTAMP,
+  last_modified_date TIMESTAMP
 );
