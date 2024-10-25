@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.mailboxclubindonesia.backoffice.config.JwtConfig;
+import org.mailboxclubindonesia.backoffice.dto.AuthenticationDto.UserSecurityDetails;
 import org.mailboxclubindonesia.backoffice.exception.PasswordMissmatchException;
 import org.mailboxclubindonesia.backoffice.model.User;
 import org.mailboxclubindonesia.backoffice.repository.UserRepository;
@@ -97,4 +99,16 @@ public class AuthenticationService {
     UUID userId = UUID.fromString((String) claims.get("userId"));
     return userId;
   }
+
+  public UserSecurityDetails getUserSecurityDetailsFromId(UUID id) {
+    Optional<User> user = userRepository.findById(id);
+
+    if (user.isEmpty()) {
+      throw new NoSuchElementException("User is not exists");
+    }
+
+    UserSecurityDetails userSecurityDetails = new UserSecurityDetails(user.get());
+    return userSecurityDetails;
+  }
+
 }

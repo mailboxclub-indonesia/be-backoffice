@@ -5,10 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.mailboxclubindonesia.backoffice.dto.AuthenticationDto.UserSecurityDetails;
 import org.mailboxclubindonesia.backoffice.exception.MissingAuthenticationTokenException;
 import org.mailboxclubindonesia.backoffice.service.AuthenticationService;
 import org.mailboxclubindonesia.backoffice.util.ServletResponseExceptionUtil;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -37,6 +40,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       }
 
       UUID userId = authenticationService.getUserIdFromToken(authenticationToken);
+      UserSecurityDetails userSecurityDetails = authenticationService.getUserSecurityDetailsFromId(userId);
+      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userSecurityDetails,
+          null, userSecurityDetails.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
       request.setAttribute("userId", userId);
       chain.doFilter(request, response);
     } catch (MissingAuthenticationTokenException exception) {

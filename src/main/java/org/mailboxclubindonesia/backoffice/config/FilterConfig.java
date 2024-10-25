@@ -24,11 +24,12 @@ public class FilterConfig {
     return registrationBean;
   }
 
-  @Bean
-  FilterRegistrationBean<AuthenticationFilter> autheticationFilter() {
-    FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-    registrationBean.setFilter(new AuthenticationFilter(authenticationService));
-    registrationBean.addUrlPatterns("/api/*");
-    return registrationBean;
-  }
+  // @Bean
+  // FilterRegistrationBean<AuthenticationFilter> autheticationFilter() {
+  // FilterRegistrationBean<AuthenticationFilter> registrationBean = new
+  // FilterRegistrationBean<>();
+  // registrationBean.setFilter(new AuthenticationFilter(authenticationService));
+  // registrationBean.addUrlPatterns("/api/*");
+  // return registrationBean;
+  // }
 }
