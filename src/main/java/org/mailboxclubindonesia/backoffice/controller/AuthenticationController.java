@@ -41,6 +41,7 @@ public class AuthenticationController {
       UserRegisterResponse response = new UserRegisterResponse(userWithHashedPassword);
       return ResponseEntity.status(HttpStatus.CREATED).body(response);
     } catch (DataIntegrityViolationException exception) {
+      System.out.println("DataIntegrityViolationException catch");
       exception.printStackTrace();
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already registered");
     }

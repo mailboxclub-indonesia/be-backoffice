@@ -65,7 +65,7 @@ public class UserController {
   }
 
   @GetMapping("/detail/{id}")
-  ResponseEntity<UserDetail> getUserDetail(@PathVariable String id, @RequestAttribute("userId") UUID userId) {
+  ResponseEntity<UserDetail> getUserDetail(@PathVariable String id) {
     try {
       Optional<UserDetail> userDetail = userService.findUserDetailById(UUID.fromString(id));
 
