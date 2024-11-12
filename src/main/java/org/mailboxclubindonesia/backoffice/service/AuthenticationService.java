@@ -17,6 +17,9 @@ import org.mailboxclubindonesia.backoffice.dto.AuthenticationDto.UserSecurityDet
 import org.mailboxclubindonesia.backoffice.exception.PasswordMissmatchException;
 import org.mailboxclubindonesia.backoffice.model.User;
 import org.mailboxclubindonesia.backoffice.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements UserDetailsService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -35,6 +38,16 @@ public class AuthenticationService {
     this.userRepository = userRepository;
     this.passwordEncoder = new BCryptPasswordEncoder();
     this.jwtConfig = jwtConfig;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    User user = userRepository.findUserByEmail(email);
+    UserSecurityDetails userSecurityDetails = new UserSecurityDetails(user);
+    return new org.springframework.security.core.userdetails.User(
+        userSecurityDetails.getUsername(),
+        userSecurityDetails.getPassword(),
+        userSecurityDetails.getAuthorities());
   }
 
   public String generateSalt() {
