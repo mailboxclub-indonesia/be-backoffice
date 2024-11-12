@@ -28,11 +28,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
 
-  @Mock
-  private UserRepository userRepository;
-
   @InjectMocks
   private AuthenticationService authenticationService;
+
+  @Mock
+  private UserRepository userRepository;
 
   @InjectMocks
   private JwtConfig jwtCongig;
@@ -44,7 +44,6 @@ class AuthenticationServiceTest {
   @BeforeEach
   public void setup() {
     passwordEncoder = new BCryptPasswordEncoder();
-
     authenticationService = new AuthenticationService(userRepository, jwtConfig);
   }
 

@@ -30,8 +30,8 @@ public class AuthenticationController {
     this.authenticationService = authenticationService;
   }
 
-  @PostMapping("/register")
-  public ResponseEntity<UserRegisterResponse> register(@Valid @RequestBody UserRegisterRequest request) {
+  @PostMapping("/signup")
+  public ResponseEntity<UserRegisterResponse> signup(@Valid @RequestBody UserRegisterRequest request) {
     boolean isConfirmPasswordMatch = request.getConfirmPassword().equals(request.getPassword());
 
     if (!isConfirmPasswordMatch)
