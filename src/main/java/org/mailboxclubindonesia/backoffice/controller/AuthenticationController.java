@@ -43,7 +43,11 @@ public class AuthenticationController {
     } catch (DataIntegrityViolationException exception) {
       System.out.println("DataIntegrityViolationException catch");
       exception.printStackTrace();
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already registered");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to signup: " + exception.getMessage());
+    } catch (RuntimeException exception) {
+      exception.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Failed to signup: " + exception.getMessage(), exception);
     }
   }
 

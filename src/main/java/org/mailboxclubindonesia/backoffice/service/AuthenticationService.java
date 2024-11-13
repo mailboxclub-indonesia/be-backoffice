@@ -78,6 +78,9 @@ public class AuthenticationService implements UserDetailsService {
     if (!isPasswordMatch)
       throw new PasswordMissmatchException("Password is not match");
 
+    user.setLastLogin();
+    userRepository.updateLastLogin(user.getId(), user.getLastLogin());
+
     return user;
   }
 

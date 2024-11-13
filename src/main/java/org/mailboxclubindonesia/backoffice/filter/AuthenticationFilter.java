@@ -44,10 +44,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     UUID userId = authenticationService.getUserIdFromToken(token);
     UserSecurityDetails userSecurityDetails = authenticationService.getUserSecurityDetailsFromId(userId);
 
-    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-        userSecurityDetails.getUsername(),
-        userSecurityDetails.getPassword(),
-        userSecurityDetails.getAuthorities());
+    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userSecurityDetails,
+        null, userSecurityDetails.getAuthorities());
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -59,7 +57,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     String path = request.getRequestURI();
     List<String> excludedPaths = Arrays.asList("/api/auth/**");
 
-    // return excludedPaths.contains(path);
     return excludedPaths.stream().anyMatch(pattern -> antPathMatcher.match(pattern, path));
   }
 }
