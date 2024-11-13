@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS "user_details" (
   user_id UUID NOT NULL,
   firstname VARCHAR(50),
   lastname VARCHAR(50),
+  gender VARCHAR(10) NULL,
   birthdate DATE,
   phone VARCHAR(25),
 
@@ -116,6 +117,8 @@ CREATE TABLE IF NOT EXISTS "customers" (
   institution_id UUID,
   firstname VARCHAR(50),
   lastname VARCHAR(50),
+  gender VARCHAR(10) NULL,
+  birthdate DATE,
   phone VARCHAR(25) UNIQUE,
   email VARCHAR(25) UNIQUE,
 
